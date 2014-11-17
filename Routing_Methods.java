@@ -34,22 +34,26 @@ public class Routing_Methods
 	//print the routing table of #Source_Node router, indicating the Next_Node hop
 	static void print_Routing_Table(int Source_Node) 
 	{
+		String sstr= "The routing table for router " + (Source_Node+1) + " is: \n ************************** \n Router No    \tNext Hop in Route \n";
+		String str1="",str2="",str3="";
 	    for (int i = 0; i < Variables.Router_Count; i++) 
 	    {
-	        System.out.print(i + 1 + "\t\t");
+	        str1 = Integer.toString(i + 1) + "                           ";
 	        int thisDis = Variables.Distance_BW_Nodes[Source_Node][i];
 	        int thisWeight = Variables.Weight_Of_Edges[Source_Node][i];
 	        if (thisDis == thisWeight) 
 	        {
-	            System.out.println("\t" + "-");
+	            str2 = "              " + "-"+"\n";
 	        } 
 	        else 
 	        {
-	            System.out.println("\t" + (Variables.Next_Node[Source_Node][i] + 1));
+	            str2 = "              " + Integer.toString(Variables.Next_Node[Source_Node][i] + 1) + "\n";
 	        }
+	        str3 = str3+str1+str2;
 	    }
-	    System.out.println();
-	}
+	    //System.out.println();
+	    JOptionPane.showMessageDialog(null, sstr+str3);	
+	    }
 
 	//find the path of a Source_Node router to Destination_Nodeination router
 	static void findPath(int Source_Node, int Destination_Node) 
@@ -80,9 +84,8 @@ public class Routing_Methods
 	    int rn = 0;
 	    try 
 	    {
-	        	
 	        	// Check for more than router count condition
-	            if (Integer.parseInt(line) > Variables.Router_Count) 
+	            if (Integer.parseInt(line) > Variables.Router_Count || Integer.parseInt(line) <= 0) 
 	            {
 	            	JOptionPane.showMessageDialog(null, "Invalid Router Number \n Enter a valid router number(1 to " + Variables.Router_Count + " ) ");
 	                rn = 999;
@@ -92,7 +95,7 @@ public class Routing_Methods
 	            rn = Integer.parseInt(line);
 	            }
 	    } 
-	    catch (NumberFormatException e) 
+	    catch (NumberFormatException|ArrayIndexOutOfBoundsException e) 
 	    {
 	    	JOptionPane.showMessageDialog(null, "Invalid Router Number \n Entered input is not a number!");
 	    }

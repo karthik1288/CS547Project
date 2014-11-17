@@ -62,7 +62,7 @@ public static void main(String args[])
 
         //Will not execute any option unless file is loaded.
         if (Variables.fileflag == false && option+1 != 1 && option+1 != 2 && option+1 != 5) {
-            System.out.println("File is not loaded. Press 1 to load a file: ");
+        	JOptionPane.showMessageDialog(null, "File must be loaded either from system or manually.\nPress 1(From system) or 2(From a text area manually) to load a file ");
             continue;
         }
 
@@ -97,11 +97,12 @@ public static void main(String args[])
                     while ((strLine = br.readLine()) != null) 
                     {
                     	Variables.Router_Count++;
+                    	System.out.println(strLine);
                     }
                     dis.close();
                     br.close();
                     
-                    System.out.println(Variables.Router_Count);
+                    //System.out.println(Variables.Router_Count);
                     
                     Variables.Loaded_Matrix = new int[Variables.Router_Count][Variables.Router_Count];
                     Variables.Prev_Node = new int[Variables.Router_Count][Variables.Router_Count];
@@ -121,28 +122,25 @@ public static void main(String args[])
                         String[] line = new String[Variables.Router_Count];
                         line = strLine.split(" ");
                         for (k = 0; k < Variables.Router_Count; k++) 
-                        {
-                        	System.out.println("K is:"+k);
                         	Variables.Loaded_Matrix[j][k] = Integer.parseInt(line[k]);
-                        	System.out.println(Variables.Loaded_Matrix[j][k]);
-                        }
-                        System.out.println("J is:"+j);
                     }
                     
                     dis.close();
                     br.close();
                 	
                     // Print Routing table entered
-                    System.out.println("Routing table loaded from file as below: ");
+                    String mat_Print = "Routing table loaded from file as below: \n",mat_Print1="";
                     for (j = 0; j < Variables.Router_Count; j++) 
                     {
                         for (k = 0; k < Variables.Router_Count; k++) 
                         {
-                            System.out.print(Variables.Loaded_Matrix[j][k] + " ");
+                        	mat_Print1 = mat_Print1+ Variables.Loaded_Matrix[j][k] + " ";
                         }
-                        System.out.println();
+                        mat_Print1 = mat_Print1+ "\n";
                     }
-
+                    
+                    JOptionPane.showMessageDialog(null, mat_Print+mat_Print1); 
+                    
                     Routing_Methods.init_Distance_Matrix();
 
                     // Build routing table for all the nodes
@@ -161,7 +159,8 @@ public static void main(String args[])
                 catch (IOException | NumberFormatException| NullPointerException e) 
                 {
                 	// Avoid exceptions if any... If not then print
-                    System.err.println(e.getMessage());
+                	System.err.println(e.getMessage());
+                	JOptionPane.showMessageDialog(null, "Matrix either doesnt have proper number inputs!!");
                     return;
                 }
                 catch (ArrayIndexOutOfBoundsException e) 
@@ -264,24 +263,22 @@ public static void main(String args[])
             	try
             	{
             	String router_No = JOptionPane.showInputDialog ( "Enter router Number: " ); 
-            	
+            	//String case3_1,case3_2;
                 routerNum = Routing_Methods.Check_for_Proper_RN(router_No); //check if the number is valid
+                System.out.println(routerNum);
                 	if (routerNum == 999)
                 	{
-                		System.out.println("The routing table for routerCant be build\n");
+                		System.out.println("The routing table for router..Cant be build\n");
                 		break;
                 	}
                 	else
                 	{
-                		System.out.println("The routing table for router " + (routerNum) + " is:");
+                		
 
-                		// Print the router table 
-                		System.out.println("*****************");
-                		System.out.println("Router No  \tNext Hop in Route");
-             
                 		// Print it hop by hop 
-                		Routing_Methods.print_Routing_Table(routerNum);
+                		Routing_Methods.print_Routing_Table(routerNum-1);
                 	}
+                 
             	}
             	catch (NumberFormatException e) 
             	{
