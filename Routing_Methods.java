@@ -79,26 +79,24 @@ public class Routing_Methods
 	    int rn = 0;
 	    try 
 	    {
-	        while (true) 
-	        {
+	        	
 	        	// Check for more than router count condition
 	            if (Integer.parseInt(line) > Variables.Router_Count) 
 	            {
 	                System.out.println("Invalid Router Number!!!");
-	                System.out.println("Enter a valid router number(1 to " + Variables.Router_Count + " ) : ");
-	                continue;
+	                System.out.println("Enter a valid router number(1 to " + Variables.Router_Count + " ) ");
+	                rn = 999;
 	            } 
 	            else 
 	            {
-	                break;
+	            rn = Integer.parseInt(line);
 	            }
-	        }
 	    } 
 	    catch (NumberFormatException e) 
 	    {
 	        System.out.println("Entered router number is Not a valid number!!");
 	    }
-	    rn = Integer.parseInt(line);
+	    
 	    return rn;
 	}
 	

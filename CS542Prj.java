@@ -253,17 +253,24 @@ public static void main(String args[])
             	try
             	{
             	String router_No = JOptionPane.showInputDialog ( "Enter router Number: " ); 
-                routerNum = Routing_Methods.Check_for_Proper_RN(router_No) - 1; //check if the number is valid
+            	
+                routerNum = Routing_Methods.Check_for_Proper_RN(router_No); //check if the number is valid
+                	if (routerNum == 999)
+                	{
+                		System.out.println("The routing table for routerCant be build\n");
+                		break;
+                	}
+                	else
+                	{
+                		System.out.println("The routing table for router " + (routerNum) + " is:");
 
-
-                System.out.println("The routing table for router" + (routerNum + 1) + "is:");
-
-                // Print the router table 
-                System.out.println("*****************");
-                System.out.println("Router No  \tNext Hop in Route");
-                
-                // Print it hop by hop 
-                Routing_Methods.print_Routing_Table(routerNum);
+                		// Print the router table 
+                		System.out.println("*****************");
+                		System.out.println("Router No  \tNext Hop in Route");
+             
+                		// Print it hop by hop 
+                		Routing_Methods.print_Routing_Table(routerNum);
+                	}
             	}
             	catch (NumberFormatException e) 
             	{
