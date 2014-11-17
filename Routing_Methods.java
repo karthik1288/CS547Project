@@ -1,0 +1,135 @@
+package cs542Prj;
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+
+@SuppressWarnings("unused")
+public class Routing_Methods 
+{	
+	//Function which gets the Next_Node hop from the Source_Node router to Destination_Nodeination
+	static void find_print_Routing_Table(int Source_Node) 
+	{
+	    int i;
+	    for (i = 0; i < Variables.Router_Count; i++) 
+	    {
+	        int temp = Variables.Prev_Node[Source_Node][i];
+	        if (temp == -1) 
+	        {
+	        	Variables.Next_Node[Source_Node][i] = -1;
+	        } 
+	        else 
+	        {
+	            while (temp != Source_Node) 
+	            {
+	            	Variables.Next_Node[Source_Node][i] = temp;
+	                temp = Variables.Prev_Node[Source_Node][temp];
+	            }
+	        }
+	    }
+	}
+
+	//print the routing table of #Source_Node router, indicating the Next_Node hop
+	static void print_Routing_Table(int Source_Node) 
+	{
+	    for (int i = 0; i < Variables.Router_Count; i++) 
+	    {
+	        System.out.print(i + 1 + "\t\t");
+	        int thisDis = Variables.Distance_BW_Nodes[Source_Node][i];
+	        int thisWeight = Variables.Weight_Of_Edges[Source_Node][i];
+	        if (thisDis == thisWeight) 
+	        {
+	            System.out.println("\t" + "-");
+	        } 
+	        else 
+	        {
+	            System.out.println("\t" + (Variables.Next_Node[Source_Node][i] + 1));
+	        }
+	    }
+	    System.out.println();
+	}
+
+	//find the path of a Source_Node router to Destination_Nodeination router
+	static void findPath(int Source_Node, int Destination_Node) 
+	{
+	    int[] queue = new int[32784];
+	    //Find the path BW SOurce and Destination
+	    int i = 0;
+	    queue[i++] = Destination_Node;
+	    int temp = Variables.Prev_Node[Source_Node][Destination_Node];
+	    while (temp != Source_Node) 
+	    {
+	        queue[i++] = temp;
+	        temp = Variables.Prev_Node[Source_Node][temp];
+	    }
+	    //print the path
+	    int j = 0;
+	    System.out.print("The shortest path from " + (Source_Node + 1) + "to " + (Destination_Node + 1) + "is: ");
+	    System.out.print((Source_Node + 1) + "-");
+	    for (j = i - 1; j > 0; j--) 
+	    {
+	        System.out.print((queue[j] + 1) + "-");
+	    }
+	    System.out.print((Destination_Node + 1) + ", the total cost is " + Variables.Distance_BW_Nodes[Source_Node][Destination_Node] + ".\n");
+	}
+
+	// Check for proper router number whether it exceeds the number of routers calculated based on matrix
+	static int Check_for_Proper_RN(String line) 
+	{
+	    int rn = 0;
+	    try 
+	    {
+	        while (true) 
+	        {
+	        	// Check for more than router count condition
+	            if (Integer.parseInt(line) > Variables.Router_Count) 
+	            {
+	                System.out.println("Invalid Router Number!!!");
+	                System.out.println("Enter a valid router number(1 to " + Variables.Router_Count + " ) : ");
+	                continue;
+	            } 
+	            else 
+	            {
+	                break;
+	            }
+	        }
+	    } 
+	    catch (NumberFormatException e) 
+	    {
+	        System.out.println("Entered router number is Not a valid number!!");
+	    }
+	    rn = Integer.parseInt(line);
+	    return rn;
+	}
+	
+	//Initialize the Weight_Of_Edges and Distance_BW_Nodes according to the Loaded_Matrix
+	static void init_Distance_Matrix() 
+	{
+	    int j, k;
+	    // Loop for entire matrix reassigning the node weight as large number for all doesn't have 
+	    for (j = 0; j < Variables.Router_Count; j++) 
+	    {
+	        for (k = 0; k < Variables.Router_Count; k++) 
+	        {
+	            if (Variables.Loaded_Matrix[j][k] == -1) 
+	            { 
+	            	Variables.Weight_Of_Edges[j][k] = Variables.Random_Large_Number;
+	            } 
+	            else 
+	            {
+	            	Variables.Weight_Of_Edges[j][k] = Variables.Loaded_Matrix[j][k];
+	            }
+	        }
+	    }
+	    
+	    // Based on network topology re-making based on the weights to distance  
+	    for (j = 0; j < Variables.Router_Count; j++) 
+	    {
+	        for (k = 0; k < Variables.Router_Count; k++) 
+	        {
+	        	Variables.Distance_BW_Nodes[j][k] = Variables.Weight_Of_Edges[j][k];  	 
+	        }
+	    }
+
+	}
+}
