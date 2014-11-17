@@ -4,6 +4,8 @@ package cs542Prj;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 @SuppressWarnings("unused")
 public class Routing_Methods 
 {	
@@ -64,13 +66,12 @@ public class Routing_Methods
 	    }
 	    //print the path
 	    int j = 0;
-	    System.out.print("The shortest path from " + (Source_Node + 1) + "to " + (Destination_Node + 1) + "is: ");
-	    System.out.print((Source_Node + 1) + "-");
+	    String strr1= "";
 	    for (j = i - 1; j > 0; j--) 
 	    {
-	        System.out.print((queue[j] + 1) + "-");
+	        strr1= strr1+(queue[j] + 1) + "-";
 	    }
-	    System.out.print((Destination_Node + 1) + ", the total cost is " + Variables.Distance_BW_Nodes[Source_Node][Destination_Node] + ".\n");
+	    JOptionPane.showMessageDialog(null, "The shortest path from " + (Source_Node + 1) + "to " + (Destination_Node + 1) + " is: " +(Source_Node + 1) + "-" + strr1 + (Destination_Node + 1) + ", the total cost is " + Variables.Distance_BW_Nodes[Source_Node][Destination_Node] + ".\n");
 	}
 
 	// Check for proper router number whether it exceeds the number of routers calculated based on matrix
@@ -83,8 +84,7 @@ public class Routing_Methods
 	        	// Check for more than router count condition
 	            if (Integer.parseInt(line) > Variables.Router_Count) 
 	            {
-	                System.out.println("Invalid Router Number!!!");
-	                System.out.println("Enter a valid router number(1 to " + Variables.Router_Count + " ) ");
+	            	JOptionPane.showMessageDialog(null, "Invalid Router Number \n Enter a valid router number(1 to " + Variables.Router_Count + " ) ");
 	                rn = 999;
 	            } 
 	            else 
@@ -94,7 +94,7 @@ public class Routing_Methods
 	    } 
 	    catch (NumberFormatException e) 
 	    {
-	        System.out.println("Entered router number is Not a valid number!!");
+	    	JOptionPane.showMessageDialog(null, "Invalid Router Number \n Entered input is not a number!");
 	    }
 	    
 	    return rn;

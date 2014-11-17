@@ -12,7 +12,8 @@ public class Dijkstra {
 	    {
 	        //Distance_BW_Nodes[source][i] = Weight_Of_Edges[source][i];
 	        visited[i] = false;
-	        if (Variables.Distance_BW_Nodes[source][i] > 1000) 
+	        
+	        if (Variables.Distance_BW_Nodes[source][i] > 999) 
 	        {
 	        	Variables.Prev_Node[source][i] = -1;
 	        } 

@@ -58,7 +58,7 @@ public static void main(String args[])
                 null,
                 options,
                 optionList.get(0));
-    	System.out.println(option);
+
 
         //Will not execute any option unless file is loaded.
         if (Variables.fileflag == false && option+1 != 1 && option+1 != 2 && option+1 != 5) {
@@ -100,7 +100,9 @@ public static void main(String args[])
                     }
                     dis.close();
                     br.close();
-
+                    
+                    System.out.println(Variables.Router_Count);
+                    
                     Variables.Loaded_Matrix = new int[Variables.Router_Count][Variables.Router_Count];
                     Variables.Prev_Node = new int[Variables.Router_Count][Variables.Router_Count];
                     Variables.Next_Node = new int[Variables.Router_Count][Variables.Router_Count]; //two arrays which stores the Prev_Node and Next_Node_Node node of source
@@ -120,13 +122,16 @@ public static void main(String args[])
                         line = strLine.split(" ");
                         for (k = 0; k < Variables.Router_Count; k++) 
                         {
+                        	System.out.println("K is:"+k);
                         	Variables.Loaded_Matrix[j][k] = Integer.parseInt(line[k]);
+                        	System.out.println(Variables.Loaded_Matrix[j][k]);
                         }
+                        System.out.println("J is:"+j);
                     }
                     
                     dis.close();
                     br.close();
-
+                	
                     // Print Routing table entered
                     System.out.println("Routing table loaded from file as below: ");
                     for (j = 0; j < Variables.Router_Count; j++) 
@@ -159,7 +164,13 @@ public static void main(String args[])
                     System.err.println(e.getMessage());
                     return;
                 }
-
+                catch (ArrayIndexOutOfBoundsException e) 
+                {
+                	// Avoid exceptions if any... If not then print
+                	JOptionPane.showMessageDialog(null, "Please check the matrix you entered.. It isnt a square matrix!! \n Please have a look at file and load again!");
+                    return;
+                }
+                
                 break;
                 
             case 2:
@@ -297,13 +308,13 @@ public static void main(String args[])
                 // Catch if not a number
                 catch (NumberFormatException e) 
                 {
-                    System.out.println("Entered is a wrong input!!");
+                	JOptionPane.showMessageDialog(null, "Invalid input stream \n Entered input is Not as expected!");
                 }
                 
                 // Catch if number is in or out of array
                 catch (ArrayIndexOutOfBoundsException e) 
                 {
-                    System.out.println("Need to enter Source and Destination seperated by a Comma!");
+                	JOptionPane.showMessageDialog(null, "Enter 2 VALID Node numbers (Source and Destination) seperated by a Comma! \n \t\t Neither Less Nor More!!");
                 }
                 
                 break;
@@ -311,7 +322,6 @@ public static void main(String args[])
                 System.exit(0);
                 break;
             default:
-          	  System.out.println("Wrong choice enter again..!!");
                 break;
         }
     } 
