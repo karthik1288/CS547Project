@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.lang.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.io.*;
 
 @SuppressWarnings("unused")
@@ -97,10 +98,16 @@ public static void main(String args[])
                     while ((strLine = br.readLine()) != null) 
                     {
                     	Variables.Router_Count++;
-                    	System.out.println(strLine);
+                    	//System.out.println(strLine);
                     }
                     dis.close();
                     br.close();
+                    
+                    if (Variables.Router_Count == 0)
+                    {
+                    	JOptionPane.showMessageDialog(null, "Nothing Loaded from file!!");
+                    	break;
+                    }
                     
                     //System.out.println(Variables.Router_Count);
                     
@@ -180,25 +187,30 @@ public static void main(String args[])
                 	Variables.fileflag = false;  //set the flag in case user chose a different file
                 	Variables.Router_Count = 0;
                 	
-                	JTextArea textArea = new JTextArea("Input your Matrix below:\n");
+                	JTextArea textArea = new JTextArea("Input your Matrix below...Make sure no empty lines after input matrix :\n");
                 	JScrollPane scrollPane = new JScrollPane(textArea);  
                 	textArea.setLineWrap(true);  
                 	textArea.setWrapStyleWord(true); 
                 	scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
                 	JOptionPane.showMessageDialog(null, scrollPane, "dialog test with textarea",  
                 	                                       JOptionPane.YES_NO_OPTION);
-                	String[] lines = textArea.getText().split("\n");
+                	String[] ta = textArea.getText().split("\n");
                     Variables.fileflag = true;
-
+                    
+                    String[] lines = Arrays.copyOfRange(ta, 1, ta.length);
+                    
+                    
                     // Input of the routing table
                     // 1. The number of rows is the number of routers
                     // 2. The -1 edge will be assigned with Random_Large_Number weight
                     
-                    for (String line : textArea.getText().split("\\n")) 
-                    {
-                    	Variables.Router_Count++;
-                    }
+                    Variables.Router_Count = lines.length;
                     
+                    if (Variables.Router_Count == 0)
+                    {
+                    	JOptionPane.showMessageDialog(null, "Nothing Loaded from text area!!");
+                    	break;
+                    }
 
                     Variables.Loaded_Matrix = new int[Variables.Router_Count][Variables.Router_Count];
                     Variables.Prev_Node = new int[Variables.Router_Count][Variables.Router_Count];
@@ -209,7 +221,7 @@ public static void main(String args[])
                     j = -1;
 
                     
-                    for (String line : textArea.getText().split("\\n")) 
+                    for (String line : lines) 
                     {
                     	
                         j++;
@@ -222,17 +234,18 @@ public static void main(String args[])
                     }
                     
 
-                    // Print 
-                    System.out.println("Routing table loaded from file as below: ");
+                    String mat_Print = "Routing table loaded from file as below: \n",mat_Print1="";
                     for (j = 0; j < Variables.Router_Count; j++) 
                     {
                         for (k = 0; k < Variables.Router_Count; k++) 
                         {
-                            System.out.print(Variables.Loaded_Matrix[j][k] + " ");
+                        	mat_Print1 = mat_Print1+ Variables.Loaded_Matrix[j][k] + " ";
                         }
-                        System.out.println();
+                        mat_Print1 = mat_Print1+ "\n";
                     }
-
+                    
+                    JOptionPane.showMessageDialog(null, mat_Print+mat_Print1); 
+                    
                     Routing_Methods.init_Distance_Matrix();
 
                     // Build routing table for all the nodes
@@ -251,11 +264,19 @@ public static void main(String args[])
                 catch ( NumberFormatException| NullPointerException e) 
                 {
                 	// Avoid exceptions if any... If not then print
-                    System.err.println(e.getMessage());
+                	System.err.println(e.getMessage());
+                	JOptionPane.showMessageDialog(null, "Matrix either doesnt have proper number inputs!!");
                     return;
                 }
-
+                catch (ArrayIndexOutOfBoundsException e) 
+                {
+                	// Avoid exceptions if any... If not then print
+                	JOptionPane.showMessageDialog(null, "Please check the matrix you entered.. It isnt a square matrix!! \n Please have a look at file and load again!");
+                    return;
+                }
+                
                 break;
+                
 
 
             case 3:
