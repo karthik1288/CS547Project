@@ -4,23 +4,11 @@ package cs542Prj;
 
 import javax.swing.*;
 
-import org.jgraph.JGraph;
-import org.jgraph.graph.DefaultEdge;
-import org.jgraph.graph.DefaultGraphCell;
-import org.jgraph.graph.GraphConstants;
-import org.jgrapht.ListenableGraph;
-import org.jgrapht.ext.JGraphModelAdapter;
-import org.jgrapht.graph.ListenableUndirectedGraph;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
 import java.lang.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.*;
 
 @SuppressWarnings("unused")
@@ -29,27 +17,12 @@ import java.io.*;
 // 1) To find the Next_Node hop in shortest path
 // 2) To find the shortest path between two specified hops
 
-public class CS542Prj extends JApplet
+public class CS542Prj 
 {
-	private static final Color     DEFAULT_BG_COLOR = Color.decode( "#FAFBFF" );
-    private static final Dimension DEFAULT_SIZE = new Dimension( 530, 320 );
-    
-    public JGraphModelAdapter m_jgAdapter;
 
 // Start of main method
-public void init() 
+public static void main(String args[]) 
 {
-	SimpleDirectedWeightedGraph g = new SimpleDirectedWeightedGraph( DefaultEdge.class );
-	
-	m_jgAdapter = new JGraphModelAdapter( g );
-    // create a visualization using JGraph, via an adapter
-    JGraph jgraph = new JGraph( m_jgAdapter );
-    adjustDisplaySettings( jgraph );
-    getContentPane(  ).add( jgraph );
-    resize( DEFAULT_SIZE );
-
-    // add some sample data (graph manipulated via JGraphT)
-
 	
 	// Define Local Variables
 	
@@ -125,8 +98,7 @@ public void init()
                     while ((strLine = br.readLine()) != null) 
                     {
                     	Variables.Router_Count++;
-                    	g.addVertex( "node"+Variables.Router_Count );
-                    	System.out.println(g);
+                    	//System.out.println(strLine);
                     }
                     dis.close();
                     br.close();
@@ -170,23 +142,9 @@ public void init()
                         for (k = 0; k < Variables.Router_Count; k++) 
                         {
                         	mat_Print1 = mat_Print1+ Variables.Loaded_Matrix[j][k] + " ";
-                        	//System.out.println(Variables.Loaded_Matrix[j][k]);
-                        	if ( Variables.Loaded_Matrix[j][k] != -1 && Variables.Loaded_Matrix[j][k] != 0)
-                        	{
-                        		//System.out.println("node"+j+1+"node"+k+1);
-                        	g.addEdge( "node"+(j+1),"node"+(k+1) );
-                        	System.out.println(g);
-                        	}
                         }
                         mat_Print1 = mat_Print1+ "\n";
                     }
-                    
-                    //positionVertexAt( "node1", 130, 40 );
-                    //positionVertexAt( "node2", 60, 200 );
-                    //positionVertexAt( "node3", 310, 230 );
-                    //positionVertexAt( "node4", 380, 70 );
-                    
-                    
                     
                     JOptionPane.showMessageDialog(null, mat_Print+mat_Print1); 
                     
@@ -386,36 +344,5 @@ public void init()
         }
     } 
     while (option != 5);
-}
-
-private void adjustDisplaySettings( JGraph jg ) {
-    jg.setPreferredSize( DEFAULT_SIZE );
-
-    Color  c        = DEFAULT_BG_COLOR;
-    String colorStr = null;
-
-    try {
-        colorStr = getParameter( "bgcolor" );
-    }
-     catch( Exception e ) {}
-
-    if( colorStr != null ) {
-        c = Color.decode( colorStr );
-    }
-
-    jg.setBackground( c );
-}
-
-private void positionVertexAt( Object vertex, int x, int y ) 
-{
-    DefaultGraphCell cell = m_jgAdapter.getVertexCell( vertex );
-    Map              attr = cell.getAttributes(  );
-    Rectangle2D        b    = GraphConstants.getBounds( attr );
-
-    GraphConstants.setBounds( attr, new Rectangle( x, y, b.OUT_RIGHT, b.OUT_TOP ) );
-
-    Map cellAttr = new HashMap(  );
-    cellAttr.put( cell, attr );
-    m_jgAdapter.edit( cellAttr, null, null, null );
 }
 }
